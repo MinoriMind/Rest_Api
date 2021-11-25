@@ -162,27 +162,6 @@ class TodoController extends AbstractController
         $todos = $todo_rep->findBy([
             'user' => $user
         ]);
-        /*
-        $em = $this->getDoctrine()->getManager();
-        $em = $this->getDoctrine()->getManager();
-        try 
-        {
-            $em->persist($todo);
-            $em->flush();
-        } 
-        catch (UniqueConstraintViolationException $exception)
-        {
-            return $this->json([
-                'status' => 400,
-                'message' => 'Todo with same name exists',
-            ]);
-        }
-
-        return $this->json([
-            'status' => 200,
-            'message' => 'Todo successfully added',
-        ]);
-        */
 
         $result = [];
         foreach ($todos as $todo) {
