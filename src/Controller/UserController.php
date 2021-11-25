@@ -55,10 +55,13 @@ class UserController extends AbstractController
         $user->setPassword(hash('sha256', $password));
 
         $em = $this->getDoctrine()->getManager();
-        try {
+        try 
+        {
             $em->persist($user);
             $em->flush();
-        } catch (UniqueConstraintViolationException $exception) {
+        } 
+        catch (UniqueConstraintViolationException $exception)
+        {
             return $this->json([
                 'status' => 400,
                 'message' => 'User with such login already registered',

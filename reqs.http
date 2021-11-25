@@ -9,4 +9,14 @@ Content-Type: application/json
     "password": "qwerty"
 }
 
-#
+###
+
+POST {{LocalApiRoot}}/todo/
+Content-Type: application/json
+
+{
+    "login": "qwerty",
+    "password": "qwerty",
+    "name": "important",
+    "text": "very important"
+}
