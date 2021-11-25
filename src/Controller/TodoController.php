@@ -107,4 +107,98 @@ class TodoController extends AbstractController
         ]);
 
     }
+
+    #[Route('/', name: 'get', methods:["GET"])]
+    public function getTodo(Request $request, UserRepository $user_rep, TodoRepository $todo_rep): Response
+    {
+        $content_type = $request->getContentType();
+        if ($content_type != 'json') {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Only application/json content type is allowed',
+            ]);
+        }
+
+        $data = json_decode($request->getContent(), true);
+        if (json_last_error() != JSON_ERROR_NONE) {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Error during parsing json',
+            ]);
+        }
+
+        if(!isset($data['login']))
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Login not found',
+            ]);
+        }
+
+        if(!isset($data['password']))
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Password not found',
+            ]);
+        }
+
+        $login = $data['login'];
+        $password = $data['password'];
+
+        $user = $user_rep->findOneBy([
+            'login' => $login,
+            'password' => hash('sha256', $password)
+        ]);
+
+        if(!$user)
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'User not found',
+            ]);
+        }
+
+        $todos = $todo_rep->findBy([
+            'user' => $user
+        ]);
+        /*
+        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
+        try 
+        {
+            $em->persist($todo);
+            $em->flush();
+        } 
+        catch (UniqueConstraintViolationException $exception)
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Todo with same name exists',
+            ]);
+        }
+
+        return $this->json([
+            'status' => 200,
+            'message' => 'Todo successfully added',
+        ]);
+        */
+
+        $result = [];
+        foreach ($todos as $todo) {
+            $array = [
+                'id' => $todo->getId(),
+                'name' => $todo->getName(),
+                'text' => $todo->getText()
+            ];
+
+            $result[] = $array;
+        }
+
+        return $this->json([
+            'status' => 200,
+            'message' => $result,
+        ]);
+
+    }
 }

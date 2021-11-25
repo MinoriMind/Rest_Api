@@ -20,3 +20,13 @@ Content-Type: application/json
     "name": "important",
     "text": "very important"
 }
+
+###
+
+GET  {{LocalApiRoot}}/todo/
+Content-Type: application/json
+
+{
+    "login": "qwerty",
+    "password": "qwerty"
+}
