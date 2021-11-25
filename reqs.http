@@ -1,0 +1,12 @@
+@LocalApiRoot = http://localhost/Rest_Api/public/index.php
+
+# Register user
+POST {{LocalApiRoot}}/user/
+Content-Type: application/json
+
+{
+    "login": "qwerty",
+    "password": "qwerty"
+}
+
+#
