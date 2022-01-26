@@ -34,9 +34,15 @@ class User
      */
     private $todos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=File::class, mappedBy="owner", orphanRemoval=true)
+     */
+    private $files;
+
     public function __construct()
     {
         $this->todos = new ArrayCollection();
+        $this->files = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,6 +98,36 @@ class User
             // set the owning side to null (unless already changed)
             if ($todo->getUser() === $this) {
                 $todo->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|File[]
+     */
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    public function addFile(File $file): self
+    {
+        if (!$this->files->contains($file)) {
+            $this->files[] = $file;
+            $file->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFile(File $file): self
+    {
+        if ($this->files->removeElement($file)) {
+            // set the owning side to null (unless already changed)
+            if ($file->getOwner() === $this) {
+                $file->setOwner(null);
             }
         }
 
