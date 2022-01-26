@@ -64,5 +64,10 @@
             "allow-contrib": false,
             "require": "5.3.*"
         }
+    },
+    "require-dev": {
+        "phpmd/phpmd": "^2.11",
+        "phpstan/phpstan": "^1.4",
+        "squizlabs/php_codesniffer": "^3.6"
     }
 }

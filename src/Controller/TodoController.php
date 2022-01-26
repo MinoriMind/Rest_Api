@@ -33,32 +33,28 @@ class TodoController extends AbstractController
             ]);
         }
 
-        if(!isset($data['login']))
-        {
+        if (!isset($data['login'])) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Login not found',
             ]);
         }
 
-        if(!isset($data['password']))
-        {
+        if (!isset($data['password'])) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Password not found',
             ]);
         }
 
-        if(!isset($data['name']))
-        {
+        if (!isset($data['name'])) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Name not found',
             ]);
         }
 
-        if(!isset($data['text']))
-        {
+        if (!isset($data['text'])) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Text not found',
@@ -73,8 +69,7 @@ class TodoController extends AbstractController
             'password' => hash('sha256', $password)
         ]);
 
-        if(!$user)
-        {
+        if (!$user) {
             return $this->json([
                 'status' => 400,
                 'message' => 'User not found',
@@ -88,13 +83,10 @@ class TodoController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $em = $this->getDoctrine()->getManager();
-        try 
-        {
+        try {
             $em->persist($todo);
             $em->flush();
-        } 
-        catch (UniqueConstraintViolationException $exception)
-        {
+        } catch (UniqueConstraintViolationException $exception) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Todo with same name exists',
@@ -105,7 +97,6 @@ class TodoController extends AbstractController
             'status' => 200,
             'message' => 'Todo successfully added',
         ]);
-
     }
 
     #[Route('/', name: 'get', methods:["GET"])]
@@ -127,16 +118,14 @@ class TodoController extends AbstractController
             ]);
         }
 
-        if(!isset($data['login']))
-        {
+        if (!isset($data['login'])) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Login not found',
             ]);
         }
 
-        if(!isset($data['password']))
-        {
+        if (!isset($data['password'])) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Password not found',
@@ -151,8 +140,7 @@ class TodoController extends AbstractController
             'password' => hash('sha256', $password)
         ]);
 
-        if(!$user)
-        {
+        if (!$user) {
             return $this->json([
                 'status' => 400,
                 'message' => 'User not found',
@@ -178,7 +166,6 @@ class TodoController extends AbstractController
             'status' => 200,
             'message' => $result,
         ]);
-
     }
 
     #[Route('/{id}', name: 'delete', methods:["DELETE"])]
@@ -200,16 +187,14 @@ class TodoController extends AbstractController
             ]);
         }
 
-        if(!isset($data['login']))
-        {
+        if (!isset($data['login'])) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Login not found',
             ]);
         }
 
-        if(!isset($data['password']))
-        {
+        if (!isset($data['password'])) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Password not found',
@@ -224,8 +209,7 @@ class TodoController extends AbstractController
             'password' => hash('sha256', $password)
         ]);
 
-        if(!$user)
-        {
+        if (!$user) {
             return $this->json([
                 'status' => 400,
                 'message' => 'User not found',
@@ -236,16 +220,14 @@ class TodoController extends AbstractController
             'id' => $id
         ]);
 
-        if(!$todo)
-        {
+        if (!$todo) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Todo not found',
             ]);
         }
 
-        if ($todo->getUser() != $user) 
-        {
+        if ($todo->getUser() != $user) {
             return $this->json([
                 'status' => 400,
                 'message' => 'You cant delete this todo',
@@ -260,7 +242,6 @@ class TodoController extends AbstractController
             'status' => 200,
             'message' => 'Todo deleted',
         ]);
-
     }
 
     #[Route('/{id}', name: 'update', methods:["PUT"])]
@@ -282,32 +263,28 @@ class TodoController extends AbstractController
             ]);
         }
 
-        if(!isset($data['login']))
-        {
+        if (!isset($data['login'])) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Login not found',
             ]);
         }
 
-        if(!isset($data['password']))
-        {
+        if (!isset($data['password'])) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Password not found',
             ]);
         }
 
-        if(!isset($data['name']))
-        {
+        if (!isset($data['name'])) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Name not found',
             ]);
         }
 
-        if(!isset($data['text']))
-        {
+        if (!isset($data['text'])) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Text not found',
@@ -324,8 +301,7 @@ class TodoController extends AbstractController
             'password' => hash('sha256', $password)
         ]);
 
-        if(!$user)
-        {
+        if (!$user) {
             return $this->json([
                 'status' => 400,
                 'message' => 'User not found',
@@ -336,16 +312,14 @@ class TodoController extends AbstractController
             'id' => $id
         ]);
 
-        if(!$todo)
-        {
+        if (!$todo) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Todo not found',
             ]);
         }
 
-        if ($todo->getUser() != $user) 
-        {
+        if ($todo->getUser() != $user) {
             return $this->json([
                 'status' => 400,
                 'message' => 'You cant update this todo',
@@ -362,7 +336,5 @@ class TodoController extends AbstractController
             'status' => 200,
             'message' => 'Todo updated',
         ]);
-
     }
-    
 }

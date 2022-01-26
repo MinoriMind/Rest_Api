@@ -22,12 +22,12 @@ class FileService
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
-        $fileName = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+        $fileName = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
 
         try {
             $file->move($this->getDirectory(), $fileName);
         } catch (FileException $e) {
-            throw new Exception('exception: filename - '.$fileName.', safe filename - '.$safeFilename.', directory - '.$this->getDirectory());
+            throw new Exception('exception: filename - ' . $fileName . ', safe filename - ' . $safeFilename . ', directory - ' . $this->getDirectory());
         }
 
         return $fileName;

@@ -31,16 +31,14 @@ class UserController extends AbstractController
             ]);
         }
 
-        if(!isset($data['login']))
-        {
+        if (!isset($data['login'])) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Login not found',
             ]);
         }
 
-        if(!isset($data['password']))
-        {
+        if (!isset($data['password'])) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Password not found',
@@ -55,13 +53,10 @@ class UserController extends AbstractController
         $user->setPassword(hash('sha256', $password));
 
         $em = $this->getDoctrine()->getManager();
-        try 
-        {
+        try {
             $em->persist($user);
             $em->flush();
-        } 
-        catch (UniqueConstraintViolationException $exception)
-        {
+        } catch (UniqueConstraintViolationException $exception) {
             return $this->json([
                 'status' => 400,
                 'message' => 'User with such login already registered',

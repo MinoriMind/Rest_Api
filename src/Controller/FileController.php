@@ -29,8 +29,7 @@ class FileController extends AbstractController
             'password' => hash('sha256', $password)
         ]);
 
-        if(!$user)
-        {
+        if (!$user) {
             return $this->json([
                 'status' => 400,
                 'message' => 'User not found',
@@ -38,8 +37,7 @@ class FileController extends AbstractController
         }
 
         $given_file = $req->files->get('file');
-        if(!$given_file)
-        {
+        if (!$given_file) {
             return $this->json([
                 'status' => 400,
                 'message' => 'File not found',
@@ -51,16 +49,14 @@ class FileController extends AbstractController
             'owner' => $user->getId(),
         ]);
 
-        if($file)
-        {
+        if ($file) {
             return $this->json([
                 'status' => 400,
                 'message' => 'File already uploaded',
             ]);
         }
 
-        try
-        {
+        try {
             $safeFilename = $file_service->upload($given_file);
             $file = new File();
             $file->setSafeName($safeFilename);
@@ -78,9 +74,7 @@ class FileController extends AbstractController
                 'status' => 200,
                 'message' => 'File successfully uploaded',
             ]);
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Exception occured during file uploading',
@@ -100,8 +94,7 @@ class FileController extends AbstractController
             'password' => hash('sha256', $password)
         ]);
 
-        if(!$user)
-        {
+        if (!$user) {
             return $this->json([
                 'status' => 400,
                 'message' => 'User not found',
@@ -138,8 +131,7 @@ class FileController extends AbstractController
             'password' => hash('sha256', $password)
         ]);
 
-        if(!$user)
-        {
+        if (!$user) {
             return $this->json([
                 'status' => 400,
                 'message' => 'User not found',
@@ -151,14 +143,11 @@ class FileController extends AbstractController
             'originalName' => $filename,
         ]);
 
-        if ($file) 
-        {
-            $result_file = $this->getParameter('uploads_dir').'/'.$file->getSafeName();
+        if ($file) {
+            $result_file = $this->getParameter('uploads_dir') . '/' . $file->getSafeName();
 
             return new BinaryFileResponse($result_file);
-        } 
-        else 
-        {
+        } else {
             return $this->json([
                 'status' => 400,
                 'message' => 'File not found',
@@ -177,8 +166,7 @@ class FileController extends AbstractController
             'password' => hash('sha256', $password)
         ]);
 
-        if(!$user)
-        {
+        if (!$user) {
             return $this->json([
                 'status' => 400,
                 'message' => 'User not found',
@@ -190,30 +178,26 @@ class FileController extends AbstractController
             'originalName' => $filename,
         ]);
 
-        if(!$file)
-        {
+        if (!$file) {
             return $this->json([
                 'status' => 400,
                 'message' => 'File not found',
             ]);
         }
 
-        try
-        {
+        try {
             $em = $this->getDoctrine()->getManager();
             $em->remove($file);
             $em->flush();
 
             $filesystem = new Filesystem();
-            $filesystem->remove([$this->getParameter('uploads_dir').'/'.$file->getSafeName()]);
+            $filesystem->remove([$this->getParameter('uploads_dir') . '/' . $file->getSafeName()]);
 
             return $this->json([
                 'status' => 200,
                 'message' => 'File deleted',
             ]);
-        }
-        catch (IOExceptionInterface $e) 
-        {
+        } catch (IOExceptionInterface $e) {
             return $this->json([
                 'status' => 400,
                 'message' => 'Exception occured during file deletion',
