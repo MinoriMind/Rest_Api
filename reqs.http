@@ -1,8 +1,9 @@
 @LocalApiRoot = http://localhost/Rest_Api/public/index.php
 @RemoteApiRoot = http://159.89.23.142
 
+
 # Register user
-POST {{LocalApiRoot}}/user/
+POST {{RemoteApiRoot}}/user/
 Content-Type: application/json
 
 {
@@ -12,7 +13,7 @@ Content-Type: application/json
 
 ###
 
-POST {{LocalApiRoot}}/todo/
+POST {{RemoteApiRoot}}/todo/
 Content-Type: application/json
 
 {
@@ -24,7 +25,7 @@ Content-Type: application/json
 
 ###
 
-GET  {{LocalApiRoot}}/todo/
+GET  {{RemoteApiRoot}}/todo/
 Content-Type: application/json
 
 {
@@ -34,7 +35,9 @@ Content-Type: application/json
 
 ###
 
-PUT  {{LocalApiRoot}}/todo/1
+
+
+PUT  {{RemoteApiRoot}}/todo/1
 Content-Type: application/json
 
 {
@@ -46,10 +49,39 @@ Content-Type: application/json
 
 ###
 
-DELETE  {{LocalApiRoot}}/todo/5
+DELETE  {{RemoteApiRoot}}/todo/1
 Content-Type: application/json
 
 {
     "login": "qwerty",
     "password": "qwerty"
 }
+
+###
+
+GET  {{RemoteApiRoot}}/files/
+Client-Login: qwerty
+Client-Password: qwerty
+
+{
+}
+
+###
+
+GET  {{RemoteApiRoot}}/files/upload.txt
+Client-Login: qwerty
+Client-Password: qwerty
+
+{
+}
+
+###
+
+DELETE  {{RemoteApiRoot}}/files/upload.txt
+Client-Login: qwerty
+Client-Password: qwerty
+
+{
+}
+
+###
