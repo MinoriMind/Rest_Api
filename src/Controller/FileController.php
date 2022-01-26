@@ -206,6 +206,11 @@ class FileController extends AbstractController
 
             $filesystem = new Filesystem();
             $filesystem->remove([$this->getParameter('uploads_dir').'/'.$file->getSafeName()]);
+
+            return $this->json([
+                'status' => 200,
+                'message' => 'File deleted',
+            ]);
         }
         catch (IOExceptionInterface $e) 
         {
