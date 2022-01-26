@@ -1,4 +1,5 @@
 @LocalApiRoot = http://localhost/Rest_Api/public/index.php
+@RemoteApiRoot = http://159.89.23.142
 
 # Register user
 POST {{LocalApiRoot}}/user/
@@ -24,6 +25,28 @@ Content-Type: application/json
 ###
 
 GET  {{LocalApiRoot}}/todo/
+Content-Type: application/json
+
+{
+    "login": "qwerty",
+    "password": "qwerty"
+}
+
+###
+
+PUT  {{LocalApiRoot}}/todo/1
+Content-Type: application/json
+
+{
+    "login": "qwerty",
+    "password": "qwerty",
+    "name": "updated important",
+    "text": "updated very important"
+}
+
+###
+
+DELETE  {{LocalApiRoot}}/todo/5
 Content-Type: application/json
 
 {

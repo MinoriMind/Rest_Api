@@ -180,4 +180,189 @@ class TodoController extends AbstractController
         ]);
 
     }
+
+    #[Route('/{id}', name: 'delete', methods:["DELETE"])]
+    public function delete(Request $request, UserRepository $user_rep, TodoRepository $todo_rep, $id): Response
+    {
+        $content_type = $request->getContentType();
+        if ($content_type != 'json') {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Only application/json content type is allowed',
+            ]);
+        }
+
+        $data = json_decode($request->getContent(), true);
+        if (json_last_error() != JSON_ERROR_NONE) {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Error during parsing json',
+            ]);
+        }
+
+        if(!isset($data['login']))
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Login not found',
+            ]);
+        }
+
+        if(!isset($data['password']))
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Password not found',
+            ]);
+        }
+
+        $login = $data['login'];
+        $password = $data['password'];
+
+        $user = $user_rep->findOneBy([
+            'login' => $login,
+            'password' => hash('sha256', $password)
+        ]);
+
+        if(!$user)
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'User not found',
+            ]);
+        }
+
+        $todo = $todo_rep->findOneBy([
+            'id' => $id
+        ]);
+
+        if(!$todo)
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Todo not found',
+            ]);
+        }
+
+        if ($todo->getUser() != $user) 
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'You cant delete this todo',
+            ]);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($todo);
+        $em->flush();
+
+        return $this->json([
+            'status' => 200,
+            'message' => 'Todo deleted',
+        ]);
+
+    }
+
+    #[Route('/{id}', name: 'update', methods:["PUT"])]
+    public function update(Request $request, UserRepository $user_rep, TodoRepository $todo_rep, $id): Response
+    {
+        $content_type = $request->getContentType();
+        if ($content_type != 'json') {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Only application/json content type is allowed',
+            ]);
+        }
+
+        $data = json_decode($request->getContent(), true);
+        if (json_last_error() != JSON_ERROR_NONE) {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Error during parsing json',
+            ]);
+        }
+
+        if(!isset($data['login']))
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Login not found',
+            ]);
+        }
+
+        if(!isset($data['password']))
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Password not found',
+            ]);
+        }
+
+        if(!isset($data['name']))
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Name not found',
+            ]);
+        }
+
+        if(!isset($data['text']))
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Text not found',
+            ]);
+        }
+
+        $login = $data['login'];
+        $password = $data['password'];
+        $new_name = $data['name'];
+        $new_text = $data['text'];
+
+        $user = $user_rep->findOneBy([
+            'login' => $login,
+            'password' => hash('sha256', $password)
+        ]);
+
+        if(!$user)
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'User not found',
+            ]);
+        }
+
+        $todo = $todo_rep->findOneBy([
+            'id' => $id
+        ]);
+
+        if(!$todo)
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'Todo not found',
+            ]);
+        }
+
+        if ($todo->getUser() != $user) 
+        {
+            return $this->json([
+                'status' => 400,
+                'message' => 'You cant update this todo',
+            ]);
+        }
+
+        $todo->setName($new_name);
+        $todo->setText($new_text);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($todo);
+        $em->flush();
+
+        return $this->json([
+            'status' => 200,
+            'message' => 'Todo updated',
+        ]);
+
+    }
+    
 }
