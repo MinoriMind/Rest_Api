@@ -1,0 +1,4 @@
+#!/bin/bash
+
+vendor/bin/phpcbf src
+git add .

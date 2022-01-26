@@ -1,0 +1,18 @@
+#!/usr/bin/python
+import sys
+import re
+
+def main():
+    with open(sys.argv[1], "r") as file:
+        regex = "\[[0-9]+\] [a-zA-Z]+"
+        message = file.read()
+
+        if(re.match(regex, message) == None):
+            print("Wrong")
+            sys.exit(1)
+        else:
+            print("Ok")
+            sys.exit(0)
+
+if __name__ == "__main__":
+    main()
